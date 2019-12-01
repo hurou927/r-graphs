@@ -1,0 +1,119 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(gcookbook)
+library(gridExtra)
+```
+
+```{r}
+pg_mean
+ggplot(pg_mean, aes(x = group, y = weight)) + geom_col(fill="orange", color = "black") 
+```
+
+```{r}
+cabbage_exp
+summary(cabbage_exp)
+ggplot(cabbage_exp, aes(x=Date, y=Weight, fill=Cultivar)) + geom_col(position="dodge", color= "black") + scale_fill_brewer(palette = "Pastel1")
+```
+
+```{r}
+ce <- cabbage_exp[1:5,]
+ggplot(ce, aes(x=Date, y=Weight, fill=Cultivar)) + geom_col(position="dodge", colour= "black") + scale_fill_brewer(palette = "Pastel1")
+
+ce <- rbind(ce, c("c52", "d21", NA, NA, NA, NA))
+ggplot(ce, aes(x=Date, y=Weight, fill=Cultivar)) + geom_col(position="dodge", colour= "black")
+```
+
+```{r}
+summary(diamonds)
+
+p <- gridExtra::grid.arrange(
+  ggplot(diamonds, aes(x=cut, fill=color)) + geom_bar() + theme(axis.text.x = element_text(angle=30)),
+  ggplot(diamonds, aes(x=cut, fill=color)) + geom_bar(position="dodge") + theme(axis.text.x = element_text(angle=90)),
+  ncol = 2
+)
+ggsave(file="diamonds.png", plot=p, width = 10, height = 3, dpi = 600)
+p
+```
+
+```{r}
+ggplot(diamonds, aes(x=carat) )  + geom_bar()
+ggplot(diamonds, aes(x=carat) )  + geom_histogram(binwidth = 0.1)
+ggplot(diamonds, aes(x=carat, fill=color, alpha=0.3)) + geom_density()
+```
+
+
+```{r}
+upc <- uspopchange %>% arrange(desc(Change)) %>% slice(1:10)
+ggplot(upc, aes(x=Abb, y = Change, fill = Region)) + geom_col(color="black")
+
+```
+
+```{r}
+upc <- uspopchange %>% arrange(desc(Change)) %>% slice(1:10)
+ggplot(upc, aes(x=reorder(Abb, Change), y = Change, fill = Region)) + geom_col(color="black") + scale_fill_manual(values = c("#669933", "#FFCC66")) + xlab("State")
+```
+
+
+
+
+
+```{r}
+climate
+summary(climate)
+```
+
+
+```{r}
+climate_sub <- climate %>% filter(Source == "Berkeley", Year >= 1900) %>% mutate(pos = Anomaly10y >= 0)
+climate_sub
+```
+
+
+
+```{r}
+ggplot(climate_sub, aes(x = Year, y = Anomaly10y, fill = pos)) +
+  geom_col(position = "identity", colour = "black", size = 0.25) +
+  scale_fill_manual(values = c("#CCEEFF", "#FFDDDD"), guide = FALSE)
+```
+
+
+```{r}
+ggplot(cabbage_exp, aes(x=Date, y=Weight, fill=Cultivar)) + 
+  geom_col(position = "fill", colour="black") + 
+  scale_y_continuous(labels=scales::percent) + 
+  scale_fill_brewer(palette = "Pastel1")
+```
+
+
+```{r}
+ce <- cabbage_exp %>% group_by(Date) %>% mutate(percent_width = Weight / sum(Weight) * 100)
+ce
+ggplot(ce, aes(x=Date, y=percent_width, fill = Cultivar)) + geom_col()
+```
+
+```{r}
+gridExtra::grid.arrange(
+ggplot(cabbage_exp, aes(x=interaction(Date, Cultivar), y=Weight)) + 
+  geom_col() + 
+  geom_text(aes(label = Weight), vjust=1.3, color = "white"),
+ggplot(cabbage_exp, aes(x=interaction(Date, Cultivar), y=Weight)) + 
+  geom_col() + 
+  geom_text(aes(label = Weight), vjust=-0.1
+            , color = "black"),
+ncol = 2
+
+)
+```
+
+
+```{r}
+ggplot(cabbage_exp, aes(x=Date, y=Weight, fill=Cultivar)) + 
+  geom_col(position="dodge") +
+  geom_text(aes(label = Weight), color = "white", vjust = 1.5, position = position_dodge(.9), size = 8)
+```
+
