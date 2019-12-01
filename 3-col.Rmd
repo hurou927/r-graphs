@@ -117,3 +117,114 @@ ggplot(cabbage_exp, aes(x=Date, y=Weight, fill=Cultivar)) +
   geom_text(aes(label = Weight), color = "white", vjust = 1.5, position = position_dodge(.9), size = 8)
 ```
 
+
+```{r}
+ce <- cabbage_exp %>% arrange(Date, rev(Cultivar))
+ce
+```
+
+```{r}
+ce <- ce %>% group_by(Date) %>% mutate(label_y = cumsum(Weight))
+ce
+```
+
+
+```{r}
+ggplot(ce, aes(x=Date, y=Weight, fill = Cultivar)) +
+  geom_col() +
+  geom_text(aes(y=label_y, label = Weight), vjust = 1.5, color = "white")
+```
+
+
+```{r}
+ce <- ce %>% group_by(Date) %>% mutate(label_y = cumsum(Weight) - 0.5* Weight)
+ggplot(ce, aes(x=Date, y=Weight, fill = Cultivar)) +
+  geom_col() +
+  geom_text(aes(y=label_y, label = Weight), vjust = 1.5, color = "white")
+```
+
+```{r}
+ce <- ce %>% group_by(Date) %>% mutate(label_y = cumsum(Weight) - 0.5* Weight)
+ggplot(ce, aes(x=Date, y=Weight, fill=Cultivar)) + 
+  geom_col(color = "black") + 
+  geom_text(aes(y=label_y, label=paste(format(Weight, nsmall=2), "kg")), size=4) +
+  scale_fill_brewer(palette="Pastel1")
+```
+
+```{r}
+tophit
+summary(tophit)
+```
+
+
+```{r}
+tophit <- tophitters2001[1:25, ]
+ggplot(tophit, aes(x=avg, y=name)) + geom_point()
+```
+
+
+
+```{r}
+gridExtra::grid.arrange(
+
+ggplot(tophit, aes(x=avg, y = reorder(name, avg))) +
+  geom_point(size = 3) + theme_bw() +
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    panel.grid.major.y = element_line(color = "grey60", linetype = "dashed")
+  ),
+ggplot(tophit, aes(y=avg, x = reorder(name, avg))) +
+  geom_point(size = 3) + theme_bw() +
+  theme(
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor.y = element_blank(),
+    panel.grid.major.x = element_line(color = "grey60", linetype = "dashed"),
+    axis.text.x = element_text(angle = 60, hjust = 1)
+  ) ,
+  ncol = 2
+
+
+
+)
+```
+
+
+```{r}
+nameorder = tophit$name[order(tophit$lg, tophit$avg)]
+tophit$name = factor(tophit$name, levels = nameorder)
+```
+
+```{r}
+ggplot(tophit, aes(x=avg, y = name, color=lg)) +
+  geom_segment(aes(yend=name), xend=0, color = "grey50") +
+  geom_point(size = 3) +
+  scale_color_brewer(palette  = "Set1", limits = c("NL", "AL")) +
+  theme_bw() +
+  theme(
+    panel.grid.major.y = element_blank()
+  )
+```
+
+
+
+
+
+
+```{r}
+nameorder = tophit$name[order(tophit$lg, tophit$avg)]
+tophit$name = factor(tophit$name, levels = nameorder)
+
+ggplot(tophit, aes(x=avg, y = name, color=lg)) +
+  geom_segment(aes(yend=name), xend=0, color = "grey50") +
+  geom_point(size = 3) +
+  scale_color_brewer(palette  = "Set1", limits = c("NL", "AL")) +
+  theme_bw() +
+  theme(
+    panel.grid.major.y = element_blank()
+  )+
+  facet_grid(lg ~., scale="free_y", space="free_y")
+```
+
+
+```{r}
