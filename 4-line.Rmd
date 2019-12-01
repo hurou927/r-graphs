@@ -1,0 +1,107 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+```{r}
+library(tidyverse)
+library(gcookbook)
+library(gridExtra)
+```
+
+
+```{r}
+ggplot(BOD, aes(x=Time, y=demand)) + geom_line()
+```
+
+```{r}
+BOD1 <- BOD
+BOD1$Time <- factor(BOD1$Time)
+ggplot(BOD1, aes(x = Time, y = demand, group = 1)) + geom_line()
+```
+
+```{r}
+ggplot(BOD,aes(x=Time, y=ddemand)) + geom_line() + expand_limits(y=0) + geom_point()
+```
+
+```{r}
+gridExtra::grid.arrange(
+  ggplot(worldpop, aes(x=Year, y=Population)) + geom_line() + geom_point(),
+  ggplot(worldpop, aes(x=Year, y=Population)) + geom_line() + geom_point() + scale_y_log10()
+)
+```
+
+
+
+```{r}
+ggplot(tg, aes(x = dose, y=length, color = supp)) + geom_line()
+ggplot(tg, aes(x = dose, y=length, linetype = supp)) + geom_line()
+```
+
+```{r}
+ggplot(tg, aes(x=factor(dose), y=length, color=supp, group=supp)) + geom_line()
+```
+```{r}
+ggplot(tg, aes(x = dose, y=length, shape = supp, fill = supp, color=supp)) + geom_line() + geom_point(size=4)
+```
+
+```{r}
+ggplot(BOD, aes(x = Time, y = demand)) + geom_line() + geom_point(size =4, shape = 22, color = "darkred", fill = "pink")
+```
+
+```{r}
+tg
+```
+
+
+```{r}
+pd <- position_dodge(0.2)
+
+ggplot(tg, aes(x=dose, y=length, fill = supp)) + 
+  geom_line() +
+  geom_point(shape = 21, size = 3) +
+  scale_fill_manual(values = c("black", "white"))
+
+ggplot(tg, aes(x=dose, y=length, fill = supp)) + 
+  geom_line(position = pd) +
+  geom_point(shape = 21, size = 3, position = pd) +
+  scale_fill_manual(values = c("black", "white"))
+```
+
+```{r}
+sunspotyear <- data.frame(
+  Year = as.numeric(time(sunspot.year)),
+  Sunspots = as.numeric(sunspot.year)
+)
+
+sunspots
+
+ggplot(sunspotyear, aes(x=Year, y=Sunspots)) + geom_area()
+```
+
+```{r}
+ggplot(sunspotyear, aes(x=Year, y=Sunspots)) + geom_area(fill = "blue", alpha = 0.2) + geom_line()
+```
+
+
+```{r}
+uspopage
+ggplot(uspopage, aes(x=Year, y=Thousands, fill = AgeGroup)) + geom_area(alpha = 0.4, size = 0.2, color = "black") + scale_fill_brewer(palette = "Blues")
+```
+```{r}
+uspopage
+ggplot(uspopage, aes(x=Year, y=Thousands, fill = AgeGroup)) + geom_area(position='fill', alpha = 0.4, size = 0.2, color = "black") + scale_fill_brewer(palette = "Blues") + scale_y_continuous(labels=scales::percent)
+```
+
+
+```{r}
+climate_mod <- climate %>% filter(Source == "Berkeley") %>% select(Year, Anomaly10y, Unc10y)
+climate_mod
+```
+
+```{r}
+ggplot(climate_mod, aes(x = Year, y = Anomaly10y)) + geom_line() 
+ggplot(climate_mod, aes(x = Year, y = Anomaly10y)) + geom_ribbon(aes(ymin = Anomaly10y - Unc10y, ymax = Anomaly10y + Unc10y), alpha = 0.2) + geom_line()
+```
+
