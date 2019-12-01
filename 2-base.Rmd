@@ -1,0 +1,55 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+# install.packages(c("ggplot2", "dplyr", "tidyverse", "gcookbook")
+library(ggplot2)
+library(tidyverse)
+library(gcookbook)
+library(gridExtra)
+```
+
+```{r}
+BOD %>% filter(demand > 10.0 , demand < 16)
+```
+
+```{r}
+BOD %>% head(10)
+```
+
+
+```{r}
+mtcars %>% head(10)
+plot(mtcars$wt, mtcars$mpg)
+ggplot(mtcars, aes(x=wt, y=mpg)) + geom_point()
+
+```
+
+
+```{r}
+plot(pressure$temperature, pressure$pressure, type = "l")
+points(pressure$temperature, pressure$pressure)
+lines(pressure$temperature, pressure$pressure/3, type = "l")
+points(pressure$temperature, pressure$pressure/3)
+
+
+ggplot(pressure, aes(x=temperature, y=pressure)) + geom_line() + geom_point()
+```
+
+
+
+```{r}
+ggplot(BOD, aes(x=factor(Time), y=demand)) + geom_col()
+ggplot(mtcars, aes(x=factor(cyl))) + geom_bar()
+```
+
+
+
+```{r}
+summary(ToothGrowth)
+ggplot(ToothGrowth, aes(x=supp, y=len)) + geom_boxplot()
+ggplot(ToothGrowth, aes(x=interaction(supp, dose), y=len)) + geom_boxplot()
+```
+
