@@ -47,9 +47,26 @@ ggplot(mtcars, aes(x=factor(cyl))) + geom_bar()
 
 
 
+## Interaction
+
 ```{r}
 summary(ToothGrowth)
-ggplot(ToothGrowth, aes(x=supp, y=len)) + geom_boxplot()
-ggplot(ToothGrowth, aes(x=interaction(supp, dose), y=len)) + geom_boxplot()
+gridExtra::grid.arrange(
+  ggplot(ToothGrowth, aes(x=supp, y=len)) + geom_boxplot()
+  , ggplot(ToothGrowth, aes(x=interaction(supp, dose), y=len)) + geom_boxplot()
+  , ggplot(ToothGrowth, aes(x=interaction(supp, dose), y=len)) + geom_violin()
+)
 ```
+
+
+
+
+```{r}
+myfun <- function(xvar) {
+  1 / (1 + exp(-xvar + 10))
+}
+
+ggplot(data.frame(x=c(0, 20)), aes(x=x)) + stat_function(fun=myfun, geom = "line")
+```
+
 
