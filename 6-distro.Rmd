@@ -1,0 +1,77 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(gcookbook)
+library(gridExtra)
+library(ggrepel)
+source("./util.R")
+```
+
+```{r}
+library(MASS)
+```
+
+
+```{r}
+faithful
+```
+
+```{r}
+ggplot(faithful, aes(x=waiting)) + geom_histogram(color="black", fill="white")
+```
+
+```{r}
+birthwt_mod <- birthwt
+birthwt_mod$smoke <- recode_factor(birthwt_mod$smoke, '0'='No Smoke', '1'='Smoke')
+ggplot(birthwt_mod, aes(x=bwt)) + geom_histogram(fill="white", color="black") + facet_grid(smoke~.) 
+```
+
+```{r}
+ggplot(faithful, aes(x=waiting)) + 
+  geom_line(stat="density") +
+  geom_line(stat="density", adjust=0.25, color="red") + 
+  geom_line(stat="density", adjust=2, color="blue")
+```
+
+
+```{r}
+ggplot(faithful, aes(x=waiting, y=..density..)) + 
+  geom_histogram(fill="cornsilk", color="grey60",size=0.2) +
+  geom_density() + xlim(35, 105)
+```
+
+```{r}
+ggplot(birthwt_mode, aes(x=bwt, fill=smoke)) + geom_density(alpha=0.3)
+```
+
+
+```{r}
+ggplot(birthwt, aes(x=factor(race), y=bwt)) + geom_boxplot() + stat_summary(fun.y = "mean", geom="point", shape=23, size = 4, fill = "white")
+```
+
+
+```{r}
+ggplot(birthwt, aes(x=factor(race), y=bwt)) + 
+  geom_violin(scale="countd") +
+  geom_boxplot(width=0.1, fill="black") +
+  stat_summary(fun.y = "median", geom="point", shape=21, size = 2.5, fill = "white")
+```
+
+
+```{r}
+m <- ggplot(faithful, aes(x = eruptions, y = waiting)) +
+ geom_point() +
+ xlim(0.5, 6) +
+ ylim(40, 110)
+m + geom_density_2d(aes(color=..level..))
+```
+```{r}
+ggplot(faithful, aes(x = eruptions, y = waiting)) +
+  geom_point() +
+  stat_density2d(aes(alpha=..density..), geom="tile", contour = FALSE)
+```
+
