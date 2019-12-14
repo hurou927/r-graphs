@@ -1,0 +1,62 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(gcookbook)
+library(gridExtra)
+library(ggrepel)
+library(grid)
+source("./util.R")
+```
+
+```{r}
+library(MASS)
+```
+
+```{r}
+p <- ggplot(faithful, aes(x = eruptions, y = waiting)) + geom_point()
+p + annotate("text", x = 3, y = 48, label = "Group 1") + annotate("text", x = 4.5, y = 66, label = "Group 2")
+```
+
+```{r}
+p <- ggplot(data.frame(x=c(-3,3)), aes(x=x)) + stat_function(fun = dnorm)
+p + annotate("text", x = 2, y = 0.3, parse = TRUE, label = "frac(1, sqrt(2*pi))*e^{-x^2 / 2}")
+```
+
+
+
+```{r}
+p <- ggplot(filter(climate, Source == "Berkeley"), aes(x=Year, y = Anomaly10y)) + geom_line()
+
+p + annotate("segment", x = 1950, xend = 1980, y = -0.25, yend = -0.25)
+p + annotate("segment", x = 1850, xend = 1820, y = -0.8, yend = -0.95, color = "blue", size = 2, arrow = arrow())
+```
+
+```{r}
+lm_labels <-function(dat) {
+  mod <- lm(hwy ~ displ, data = dat)
+  formula <- sprintf("italic(y) == %.2f %+.2f * italic(x)", round(coef(mod)[1], 2), round(coef(mod)[2], 2))
+  r <- cor(dat$displ, dat$hwy)
+  r2 <- sprintf("italic(R^2) == %.2f", r^2)
+  data.frame(formula = formula, r2 = r2, stringsAsFactors = FALSE)
+}
+```
+
+
+```{r}
+labels <- mpg %>% group_by(drv) %>% do(lm_labels(.))
+labels
+```
+```{r}
+mpg_plot <- ggplot(mpg, aes(x=displ, y=hwy)) + geom_point() + facet_grid(.~drv)
+mpg_plot +
+  geom_smooth(method = lm, se = FALSE) +
+  geom_text(data = labels, aes(label=formula), x = 3, y = 40, parse = TRUE, hjust = 0) +
+  geom_text(data = labels, aes(label=r2), x = 3, y = 35, parse = TRUE, hjust = 0)
+
+```
+
+

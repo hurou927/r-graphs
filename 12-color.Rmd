@@ -1,0 +1,75 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(gcookbook)
+library(gridExtra)
+library(ggrepel)
+library(grid)
+source("./util.R")
+
+library(hexbin)
+library(MASS)
+library(viridis)
+library(viridisLite)
+library(maps)
+library(mapproj)
+```
+
+```{r}
+gridExtra::grid.arrange(
+ ggplot(birthwt, aes(x=bwt)) + geom_histogram(fill = "red", color = "black")
+ , ggplot(mtcars, aes(x=wt, y=mpg)) + geom_point(color="red")
+ , ncol = 2
+)
+```
+
+```{r}
+ggplot(data.frame(x = rnorm(10000), y = rnorm(10000)), aes(x = x, y = y)) +
+  geom_hex() + coord_fixed() +
+  scale_fill_viridis() + theme_bw()
+```
+
+
+```{r}
+climate_mod <- climate %>% filter(Source == "Berkeley") %>% mutate(valence = if_else(Anomaly10y >= 0, "pos", "neg"))
+summary(climate_mod)
+ggplot(climate_mod, aes(x=Year, y=Anomaly10y)) + geom_area(aes(fill = valence)) + geom_line() + geom_hline(yintercept = 0)
+```
+
+
+```{r}
+#states_map <- map_data("state")
+states_map <- map_data("world", "Japan")
+states_map %>% head(10)
+ggplot(states_map, aes(x=long, y=lat, group = group)) + geom_polygon(fill = "white", color = "black")
+```
+
+```{r}
+library(jpndistrict)
+```
+
+```{r}
+jpn_admins(14)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

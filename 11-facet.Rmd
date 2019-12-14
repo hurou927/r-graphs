@@ -1,0 +1,36 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(gcookbook)
+library(gridExtra)
+library(ggrepel)
+library(grid)
+source("./util.R")
+```
+
+```{r}
+mpg_plot <- ggplot(mpg, aes(x=displ, y=hwy)) + geom_point()
+mpg_plot
+```
+
+
+```{r}
+mpg_plot + facet_grid(drv ~ .)
+```
+
+```{r}
+mpg_plot + facet_wrap( ~ class)
+```
+
+
+```{r}
+ggplot(cabbage_exp, aes(x=Cultivar, y = Weight)) + geom_col() + facet_grid(. ~ Date) +
+  theme(strip.text = element_text(face = "bold", size = rel(1.5))) +
+  theme(strip.text  = element_text(face = "bold", size = rel(1.5)),
+        strip.background = element_rect(fill = "lightblue", color = "black", size = 1 ))
+```
+
