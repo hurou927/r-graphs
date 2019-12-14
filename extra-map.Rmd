@@ -55,3 +55,23 @@ summary(jp_shp)
 ggplot(jp_shp) + geom_sf(aes(fill = ENGTYPE_1)) + theme_void() + theme(legend.position = c(0.75, 0.4))
 ```
 
+```{r}
+pop <- read.csv("data/pop.csv")
+pop$pref = factor(pop$pref)
+jp_pop_shp <- merge(jp_shp, pop, by.x="NL_NAME_1",by.y="pref")
+jp_pop_shp %>% head()
+write.csv(jp_pop_shp, "data/jp_pop_shp.csv")
+```
+
+```{r}
+ggplot(data = jp_pop_shp, aes(fill = population)) + 
+  geom_sf() + 
+  theme_void() + 
+  theme(legend.position = c(0.75, 0.4)) + 
+  scale_fill_gradient2(low = "blue", mid = "grey90", high = "red", midpoint = 7000)
+```
+
+```{r}
+ggplot(pop, aes(x=population)) + geom_density()
+```
+
