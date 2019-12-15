@@ -1,0 +1,42 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(gcookbook)
+library(gridExtra)
+library(ggrepel)
+library(grid)
+source("./util.R")
+
+#library(hexbin)
+#library(MASS)
+#library(viridis)
+#library(viridisLite)
+library(maps)
+library(mapproj)
+library(rgdal)
+library(raster)
+library(rgdal)
+library(sf)
+
+```
+
+```{r}
+# Linux
+font_A <- c("IPAMincho")
+d <- data.frame(X=rep(1:5, 2), Y=c(1:5, 5:1), A=rep(c('い','いい'), each=5))
+
+ggplot(data=d, aes(x=X, y=Y, group=A, color=A)) +
+  geom_line(size=2) +
+  labs(x="えっくす", y="わい", color="えー", title="たいとる") + 
+  theme(text = element_text(family = font_A))
+```
+
+
+
+
+
+
