@@ -11,22 +11,14 @@ library(ggrepel)
 library(grid)
 source("./util.R")
 
-#library(hexbin)
-#library(MASS)
-#library(viridis)
-#library(viridisLite)
-library(maps)
-library(mapproj)
-library(rgdal)
-library(raster)
-library(rgdal)
-library(sf)
-
+sysname <- Sys.info()['sysname']
+jpfont <- if_else(sysname == 'Darwin', "HiraKakuProN-W3", if_else(sysname == "Linux", "IPAMincho", "IPAMincho"))
 ```
 
 ```{r}
 # Linux
 font_A <- c("IPAMincho")
+font_A <- c("HiraKakuProN-W3")
 d <- data.frame(X=rep(1:5, 2), Y=c(1:5, 5:1), A=rep(c('い','いい'), each=5))
 
 ggplot(data=d, aes(x=X, y=Y, group=A, color=A)) +
@@ -35,7 +27,9 @@ ggplot(data=d, aes(x=X, y=Y, group=A, color=A)) +
   theme(text = element_text(family = font_A))
 ```
 
-
+```{r}
+Sys.info()['sysname']
+```
 
 
 
