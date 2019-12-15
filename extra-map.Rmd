@@ -69,9 +69,21 @@ ggplot(data = jp_pop_shp, aes(fill = population)) +
   theme_void() + 
   theme(legend.position = c(0.75, 0.4)) + 
   scale_fill_gradient2(low = "blue", mid = "grey90", high = "red", midpoint = 7000)
+ggplot(data = jp_pop_shp, aes(fill = change_ratio)) + 
+  geom_sf() + 
+  theme_void() + 
+  theme(legend.position = c(0.75, 0.4)) + 
+  scale_fill_gradient2(low = "blue", mid = "grey90", high = "red")
 ```
 
 ```{r}
 ggplot(pop, aes(x=population)) + geom_density()
+```
+```{r}
+jp_pop_shp <- jp_pop_shp %>% mutate(isPopGrown = factor(if_else(change_ratio > 0, "grown", "not_grown")))
+ggplot(data = jp_pop_shp) + 
+  geom_sf(aes(fill=isPopGrown)) + 
+  theme_void() + 
+  theme(legend.position = c(0.75, 0.4)) + scale_fill_manual(values = c("red", "white")) #+   scale_fill_gradient2(low = "blue", mid = "grey90", high = "red")
 ```
 
