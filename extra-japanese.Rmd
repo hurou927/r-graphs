@@ -12,24 +12,24 @@ library(grid)
 source("./util.R")
 
 sysname <- Sys.info()['sysname']
-jpfont <- if_else(sysname == 'Darwin', "HiraKakuProN-W3", if_else(sysname == "Linux", "IPAMincho", "IPAMincho"))
+jpfont <- if_else(sysname == 'Darwin', "HiraKakuProN-W3", if_else(sysname == "Linux", "IPAMincho", "Meiryo UI"))
 ```
+
+
+
+
+
 
 ```{r}
 # Linux
-font_A <- c("IPAMincho")
-font_A <- c("HiraKakuProN-W3")
 d <- data.frame(X=rep(1:5, 2), Y=c(1:5, 5:1), A=rep(c('い','いい'), each=5))
 
 ggplot(data=d, aes(x=X, y=Y, group=A, color=A)) +
   geom_line(size=2) +
   labs(x="えっくす", y="わい", color="えー", title="たいとる") + 
-  theme(text = element_text(family = font_A))
+  theme(text = element_text(family = jpfont))
 ```
 
-```{r}
-Sys.info()['sysname']
-```
 
 
 
