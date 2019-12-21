@@ -1,0 +1,52 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(gcookbook)
+library(gridExtra)
+library(ggrepel)
+library(grid)
+source("./util.R")
+
+library(hexbin)
+```
+
+```{r}
+str(mpg)
+```
+
+```{r}
+lm_labels <- function(dat, x, y) {
+  mod <- lm(as.formula(sprintf("%s ~ %s",y, x)), data=dat)
+  formula <- sprintf("italic(y) == %.2f %+.2f * italic(x)", 
+                     round(coef(mod)[1],2), round(coef(mod)[2], 2))
+  r <- cor(dat[[y]], dat[[x]])
+  r2 <- sprintf("italic(R^2) == %.2f", r^2)
+  data.frame(formula = formula, r2 = r2, stringsAsFactors = FALSE)
+}
+```
+
+
+```{r}
+lm_labels(mpg, "displ", "hwy")
+```
+```{r}
+mpg_plot = ggplot(mpg, aes(x=displ, y=hwy)) +
+  geom_point() +
+  facet_grid(fl ~ drv)
+```
+
+
+```{r}
+f_labels = data.frame(drv = c("4", "f", "r"), label = c("44", "ff", "rr"))
+mpg_plot +  geom_text(data=f_labels,x=6, y=40, aes(label=label))
+```
+
+
+```{r}
+mpg_plot + geom_smooth(method = lm, se = FALSE)
+```
+
